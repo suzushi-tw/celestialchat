@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Include any other headers you need, such as an API key
+
       },
       body: JSON.stringify({
         api_key: process.env.TAVILY_API_KEY,
@@ -71,7 +71,10 @@ export async function POST(req: Request) {
     });
 
     // Check if the request was successful
+    // Check if the request was successful
     if (!webresponse.ok) {
+      console.error('Response status:', webresponse.status);
+      console.error('Response status text:', webresponse.statusText);
       throw new Error('Network response was not ok');
     }
 

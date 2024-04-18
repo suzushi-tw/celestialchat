@@ -15,7 +15,7 @@ import {
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -37,6 +37,7 @@ import Chat from "./Chat"
 import { useState, useEffect } from "react"
 import { ScrollArea } from "./ui/scroll-area"
 import Image from "next/image"
+import { Button } from "@/components/ui/moving-border";
 
 interface LinkItem {
   title: string;
@@ -155,7 +156,7 @@ const Landing = () => {
                       ))
                     ) : (
                       <div className="items-center justify-center flex flex-col">
-                        <Image src="/cta.png" alt="Call to action" height={200} width={200}/>
+                        <Image src="/cta.png" alt="Call to action" height={200} width={200} />
                         <h1>Get your answer in seconds, not days !</h1>
                       </div>
                     )}
@@ -167,14 +168,21 @@ const Landing = () => {
             <div className="mt-auto p-4">
               <Card x-chunk="dashboard-02-chunk-0">
                 <CardHeader className="p-2 pt-0 md:p-4">
-                  <CardTitle>Work in progress</CardTitle>
+                  <CardTitle>Looking for a document Chatbot</CardTitle>
                   <CardDescription>
-                    Head over to github to find out more
+                    Head over to CelestialPDF to try it out !
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                  <Button size="sm" className="w-full">
-                    Github <Github />
+                  <Button
+                    borderRadius="1.75rem"
+                    size="sm"
+                    className=" w-full bg-white dark:bg-slate-900 text-black dark:text-white border-neutral-200 dark:border-slate-800"
+                  >
+                    <Link href={"https://celestialpdf.com/"}>
+                      CelestialPDF
+                    </Link>
+
                   </Button>
                 </CardContent>
               </Card>

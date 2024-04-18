@@ -18,6 +18,7 @@ import { useState, useRef, useEffect } from 'react';
 import CopyToClipboard from './CopyToClipboard'
 import { Markdown, MarkdownProps, StoryBook, useControls, useCreateStore } from '@lobehub/ui';
 import { Input } from './ui/input'
+import { Cleansvg } from '@/lib/icon'
 
 interface ChatProps {
     onRelatedLinks: (links: string) => void;
@@ -26,7 +27,7 @@ interface ChatProps {
 function Chat({ onRelatedLinks }: ChatProps) {
     const [relatedLinks, setRelatedLinks] = useState('');
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, error, data } =
+    const { messages, input, handleInputChange, handleSubmit, isLoading, error, data,  } =
         useChat({
             onResponse: response => {
                 console.log(data);
@@ -47,7 +48,9 @@ function Chat({ onRelatedLinks }: ChatProps) {
         })
     const messagesEndRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (messages.length > 0 && messages[messages.length - 1].role === 'user') {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
     }, [messages]);
 
     return (
@@ -133,6 +136,9 @@ function Chat({ onRelatedLinks }: ChatProps) {
                         />
                         <div className='flex flex-row justify-between w-full mt-2'>
                             <div className="flex items-center gap-1.5 ">
+                                <Button>
+                                    <Cleansvg />
+                                </Button>
                                 <Select>
                                     <SelectTrigger className="w-[180px] focus-visible:ring-transparent">
                                         <SelectValue placeholder="Claude Haiku" />
