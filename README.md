@@ -1,4 +1,5 @@
-<video src="./public/celestialchat.mp4" alt="Celestialchat demo" autoplay muted></video>
+
+<img src="./public/celestialchat.gif"   alt="Demo">
 
 ## CelestialChat
 
