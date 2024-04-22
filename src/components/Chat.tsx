@@ -26,32 +26,54 @@ interface ChatProps {
 
 function Chat({ onRelatedLinks }: ChatProps) {
     const [relatedLinks, setRelatedLinks] = useState('');
-
-    const { messages, input, handleInputChange, handleSubmit, isLoading, error, data,  } =
+    const [isMessageComplete, setIsMessageComplete] = useState(false);
+    const [isFinished, setIsFinished] = useState(false);
+    const { messages, input, handleInputChange, handleSubmit, isLoading, error, setMessages } =
         useChat({
             onResponse: response => {
-                console.log(data);
+                console.log(messages);
+                console.log(response)
                 if (!response.ok) {
                     toast.error(error?.message || 'Something went wrong!')
                 } else {
                     const headers = response.headers;
                     const relatedLink = headers.get("X-Related-Link"); // Extracting the value of X-Related-Link header
                     if (relatedLink) {
-                        const decodedlink = decodeURIComponent(relatedLink)
-                        console.log("Related Link:", decodedlink); // Use the relatedLink as needed
-                        onRelatedLinks(decodedlink)
+                        const decodedlink = `\n${decodeURIComponent(relatedLink)}`;
+                        console.log("Related Link:", decodedlink);
+                        setRelatedLinks(decodedlink);
+
                     }
 
-
                 }
+            },
+            onFinish: () => {
+                setIsMessageComplete(true);
             }
         })
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-        if (messages.length > 0 && messages[messages.length - 1].role === 'user') {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (isMessageComplete && messages.length > 0) {
+            // Assuming you have a way to determine the last AI message
+            // For example, by checking the role or content of the last message
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage.role === 'assistant') {
+                // Append related links to the last AI message
+                // This is a simplified example; adjust according to your data structure
+                lastMessage.content += `\n\nRelated Links: ${relatedLinks}`;
+                // Reset the flag
+                setIsMessageComplete(false);
+            }
         }
-    }, [messages]);
+    }, [messages, isMessageComplete, relatedLinks]);
+
+    const clearchat = () => {
+        setMessages([])
+    }
+
+
+
+
 
     return (
         <div className='w-full h-full'>
@@ -76,9 +98,11 @@ function Chat({ onRelatedLinks }: ChatProps) {
 
                         >
 
-                            {messages.map(m => (
 
-                                <div key={m.id} className='mr-6 whitespace-pre-wrap md:mr-12'>
+
+                            {messages.map((m) => (
+
+                                <div key={m.id} className='mr-6 whitespace-pre-wrap md:mr-12' >
                                     {m.role === 'user' && (
                                         <div className='mb-6 flex gap-3'>
                                             <Avatar>
@@ -108,18 +132,22 @@ function Chat({ onRelatedLinks }: ChatProps) {
                                                     <CopyToClipboard message={m} className='-mt-1 ml-2' />
                                                 </div>
                                                 <div className='mt-2 text-black'>
-                                                    {/* <ReactMarkdown>{m.content}</ReactMarkdown> */}
-                                                    {/* <StoryBook levaStore={store}>
-                                                    <Markdown {...options} />
-                                                </StoryBook> */}
-                                                    <Markdown className='my-3 text-sm' lineHeight={1.0} variant="chat" fontSize={16}>{m.content}</Markdown>
+
+                                                    {/* <Markdown className='my-3 text-sm' lineHeight={1.0} variant="chat" fontSize={16}>
+                                                        {`${m.content} ${relatedLinks && `\n \n Related Links: ${relatedLinks}`}`}
+                                                    </Markdown> */}
+                                                    <Markdown className='my-3 text-sm' lineHeight={1.0} variant="chat" fontSize={16}>
+                                                        {m.content}
+                                                    </Markdown>
                                                 </div>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             ))}
-                            <div ref={messagesEndRef} />
+
+
+
                         </ScrollArea>
 
 
@@ -127,7 +155,7 @@ function Chat({ onRelatedLinks }: ChatProps) {
 
                 </CardContent>
                 <CardFooter className='w-full flex flex-col'>
-                    <form className='w-full' onSubmit={handleSubmit}>
+                    <form className='w-full' onSubmit={handleSubmit} onReset={clearchat}>
                         <Input
                             className="p-4"
                             placeholder={`Ask any question`}
@@ -136,7 +164,7 @@ function Chat({ onRelatedLinks }: ChatProps) {
                         />
                         <div className='flex flex-row justify-between w-full mt-2'>
                             <div className="flex items-center gap-1.5 ">
-                                <Button>
+                                <Button type="reset">
                                     <Cleansvg />
                                 </Button>
                                 <Select>
@@ -167,7 +195,7 @@ function Chat({ onRelatedLinks }: ChatProps) {
 
                 </CardFooter>
             </Card>
-        </div>
+        </div >
     )
 }
 

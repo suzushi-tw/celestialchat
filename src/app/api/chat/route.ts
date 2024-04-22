@@ -5,6 +5,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { AnthropicStream } from 'ai';
 import axios from 'axios'
 
+
 // Create an OpenAI API client (that's edge friendly!)
 // const openai = new OpenAI({
 //   apiKey: process.env.OPENAI_API_KEY,
@@ -19,7 +20,7 @@ interface Message {
 // // IMPORTANT! Set the runtime to edge
 export const runtime = 'edge';
 
-
+const through2 = require('through2');
 
 export async function POST(req: Request) {
   try {
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
         query: optimizedQuery,
         search_depth: 'basic',
         include_answer: false,
-        include_images: false,
+        include_images: true,
         include_raw_content: false,
         max_results: 5,
         include_domains: [],
@@ -99,16 +100,23 @@ export async function POST(req: Request) {
       max_tokens: 4096,
     });
 
-    const tavilylink = tavilyResponse.results.map((result: { title: string, url: string }) => `${result.title}: \nLink: ${result.url}`).join('\n');
-    // const relatedlink = `Related link for "${optimizedQuery}":\n${tavilylink}`;
+    const tavilylink = tavilyResponse.results.map((result: { title: string, url: string }) => `[${result.title}](${result.url})`).join('\n');
+   
     const data = new StreamData();
     const relatedlinkarray = JSON.stringify(tavilylink);
     console.log(relatedlinkarray)
+
+
+
+    const imageLinks = tavilyResponse.images.join('\n');
     const stream = AnthropicStream(response)
+
+    
     return new StreamingTextResponse(stream, {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'X-Related-Link': encodeURIComponent(tavilylink), // Custom header for the related link
+        'X-Image-Links': encodeURIComponent(imageLinks), // Custom header for the image links
       },
     });
 

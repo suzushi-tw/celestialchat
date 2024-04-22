@@ -37,7 +37,7 @@ import Chat from "./Chat"
 import { useState, useEffect } from "react"
 import { ScrollArea } from "./ui/scroll-area"
 import Image from "next/image"
-import { Button } from "@/components/ui/moving-border";
+import { Button } from "./ui/button"
 
 interface LinkItem {
   title: string;
@@ -137,30 +137,30 @@ const Landing = () => {
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
                   <Home className="h-4 w-4" />
-                  Sources
+                  Tired of waiting for answers?
                 </Link>
                 <ScrollArea className="h-[calc(100vh-3.5rem-20rem)]">
-                  <ScrollArea className="h-[calc(100vh-3.5rem-20rem)]">
-                    {parsedLinks.length > 0 ? (
-                      parsedLinks.map((link, index) => (
-                        link && (
-                          <Link href={link.url} key={index}>
-                            <Card className="w-[250px] ">
-                              <CardHeader>
-                                <CardTitle className="truncate w-full text-lg">{link.title}</CardTitle>
-                                <CardDescription className="truncate w-full">{link.url}</CardDescription>
-                              </CardHeader>
-                            </Card>
-                          </Link>
-                        )
-                      ))
-                    ) : (
-                      <div className="items-center justify-center flex flex-col">
-                        <Image src="/cta.png" alt="Call to action" height={200} width={200} />
-                        <h1>Get your answer in seconds, not days !</h1>
-                      </div>
-                    )}
-                  </ScrollArea>
+
+                  {parsedLinks.length > 0 ? (
+                    parsedLinks.map((link, index) => (
+                      link && (
+                        <Link href={link.url} key={index}>
+                          <Card className="w-[250px] ">
+                            <CardHeader>
+                              <CardTitle className="truncate w-full text-lg">{link.title}</CardTitle>
+                              <CardDescription className="truncate w-full">{link.url}</CardDescription>
+                            </CardHeader>
+                          </Card>
+                        </Link>
+                      )
+                    ))
+                  ) : (
+                    <div className="items-center justify-center flex flex-col">
+                      <Image src="/cta.png" alt="Call to action" height={200} width={200} />
+                      <h1>Get your answer in seconds, not days !</h1>
+                    </div>
+                  )}
+
                 </ScrollArea>
 
               </nav>
@@ -168,22 +168,16 @@ const Landing = () => {
             <div className="mt-auto p-4">
               <Card x-chunk="dashboard-02-chunk-0">
                 <CardHeader className="p-2 pt-0 md:p-4">
-                  <CardTitle>Looking for a document Chatbot</CardTitle>
+                  <CardTitle>Deploy your own blazing fast AI chat</CardTitle>
                   <CardDescription>
-                    Head over to CelestialPDF to try it out !
+                    Head over to Github to find out more details !
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                  <Button
-                    borderRadius="1.75rem"
-                    size="sm"
-                    className=" w-full bg-white dark:bg-slate-900 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-                  >
-                    <Link href={"https://celestialpdf.com/"}>
-                      CelestialPDF
-                    </Link>
+                  <Link href={"https://github.com/suzushi-tw/celestialchat"} className="w-full inline-flex h-10 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                    Self Host
+                  </Link>
 
-                  </Button>
                 </CardContent>
               </Card>
             </div>
