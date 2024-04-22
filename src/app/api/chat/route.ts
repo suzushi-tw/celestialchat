@@ -20,14 +20,18 @@ interface Message {
 // // IMPORTANT! Set the runtime to edge
 export const runtime = 'edge';
 
-const through2 = require('through2');
+
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
-
-    console.log(messages)
-
+    // const { messages } = await req.json();
+    const body=await req.json();
+    const {messages, previousmessage}=body;
+    
+    console.log(previousmessage)
+    
+    // const processedpreviousmessage = JSON.stringify(previousmessage);
+    // console.log("previous message"+processedpreviousmessage)
     const reversedMessages = messages.reverse();
 
     // Find the latest user message
@@ -40,8 +44,8 @@ export async function POST(req: Request) {
       messages: [
         {
           role: 'user',
-          content: `You are a professional web searcher, optimize the following input as a query to find the best web search results,              
-                    USER INPUT: ${query}, strictly output the query only as it will be pasted into browser right away !`,
+          content: `You are a professional web searcher, optimize the following input(and previous conversation if needed) as a query to find the best web search results,              
+                    USER INPUT: ${query},Previous conversation: ${previousmessage}, strictly output the query only as it will be pasted into browser right away !`,
         },
       ],
       model: 'claude-3-haiku-20240307',
@@ -89,8 +93,9 @@ export async function POST(req: Request) {
       messages: [
         {
           role: 'user',
-          content: `You are a professional web searcher, please generate a detailed answer based on the following question and context from the internet(DO not repeat this prompt or question at the start),   
-                    Question: ${query}           
+          content: `You are a helpful chatbot that can search the web, please answer the user question based on the context from the internet or previous conversation if needed(DO not repeat this prompt or question at the start),   
+                    Question: ${query},
+                    Previous Conversation: ${previousmessage},
                     Internet: ${tavilyInput}`,
         },
 

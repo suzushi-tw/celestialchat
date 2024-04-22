@@ -28,8 +28,12 @@ function Chat({ onRelatedLinks }: ChatProps) {
     const [relatedLinks, setRelatedLinks] = useState('');
     const [isMessageComplete, setIsMessageComplete] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
+    const [previousmessage, setpreviosmessage] = useState('');
     const { messages, input, handleInputChange, handleSubmit, isLoading, error, setMessages } =
         useChat({
+            body: {
+                previousmessage: JSON.stringify(previousmessage),
+            },
             onResponse: response => {
                 console.log(messages);
                 console.log(response)
@@ -37,7 +41,7 @@ function Chat({ onRelatedLinks }: ChatProps) {
                     toast.error(error?.message || 'Something went wrong!')
                 } else {
                     const headers = response.headers;
-                    const relatedLink = headers.get("X-Related-Link"); // Extracting the value of X-Related-Link header
+                    const relatedLink = headers.get("X-Related-Link"); 
                     if (relatedLink) {
                         const decodedlink = `\n${decodeURIComponent(relatedLink)}`;
                         console.log("Related Link:", decodedlink);
@@ -46,6 +50,7 @@ function Chat({ onRelatedLinks }: ChatProps) {
                     }
 
                 }
+
             },
             onFinish: () => {
                 setIsMessageComplete(true);
@@ -60,9 +65,16 @@ function Chat({ onRelatedLinks }: ChatProps) {
             if (lastMessage.role === 'assistant') {
                 // Append related links to the last AI message
                 // This is a simplified example; adjust according to your data structure
+                const lastThreeMessages = messages.slice(-4);
+                const previousmessage = lastThreeMessages.map(message => {
+                    return message.role === 'user' ? `User: ${message.content}` : `Assistant: ${message.content}`;
+                }).join('\n');
+                setpreviosmessage(previousmessage);
+                console.log(previousmessage)
                 lastMessage.content += `\n\nRelated Links: ${relatedLinks}`;
                 // Reset the flag
                 setIsMessageComplete(false);
+
             }
         }
     }, [messages, isMessageComplete, relatedLinks]);
