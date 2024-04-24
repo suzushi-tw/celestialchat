@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { use } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
 import Chatinput from './Chatinput'
 import { Textarea } from './ui/textarea'
@@ -26,13 +26,17 @@ interface ChatProps {
 
 function Chat({ onRelatedLinks }: ChatProps) {
     const [relatedLinks, setRelatedLinks] = useState('');
+    const [depth, setdepth]=useState(false)
     const [isMessageComplete, setIsMessageComplete] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
     const [previousmessage, setpreviosmessage] = useState('');
+    const [model, setModel] = useState('claude-3-haiku-20240307'); // default value
     const { messages, input, handleInputChange, handleSubmit, isLoading, error, setMessages } =
         useChat({
             body: {
                 previousmessage: JSON.stringify(previousmessage),
+                aimodel: model,
+                depth: depth
             },
             onResponse: response => {
                 console.log(messages);
@@ -41,7 +45,7 @@ function Chat({ onRelatedLinks }: ChatProps) {
                     toast.error(error?.message || 'Something went wrong!')
                 } else {
                     const headers = response.headers;
-                    const relatedLink = headers.get("X-Related-Link"); 
+                    const relatedLink = headers.get("X-Related-Link");
                     if (relatedLink) {
                         const decodedlink = `\n${decodeURIComponent(relatedLink)}`;
                         console.log("Related Link:", decodedlink);
@@ -82,9 +86,16 @@ function Chat({ onRelatedLinks }: ChatProps) {
     const clearchat = () => {
         setMessages([])
     }
+    const toggledepth=()=>{
+        setdepth(!depth)
+    }
 
 
-
+    const handleValueChange = async (selectedValue: string) => {
+        console.log("Selected value: ", selectedValue);
+        toast.success("AI model Updated !")
+        setModel(selectedValue);
+    };
 
 
     return (
@@ -179,20 +190,22 @@ function Chat({ onRelatedLinks }: ChatProps) {
                                 <Button type="reset">
                                     <Cleansvg />
                                 </Button>
-                                <Select>
+                                <Select onValueChange={handleValueChange}>
                                     <SelectTrigger className="w-[180px] focus-visible:ring-transparent">
                                         <SelectValue placeholder="Claude Haiku" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Models</SelectLabel>
-                                            <SelectItem value="gpt-3.5-turbo-16k" disabled>GPT 3.5</SelectItem>
+                                            <SelectItem value="gpt-3.5-turbo-16k" >GPT 3.5</SelectItem>
                                             <SelectItem value="claude-3-haiku-20240307">Claude Haiku</SelectItem>
-                                            <SelectItem value="gpt-4-1106-preview" disabled>GPT 4 Turbo ⚡️</SelectItem>
-                                            <SelectItem value="claude-3-sonnet-20240229" disabled>Claude Sonnet ⚡️</SelectItem>
+                                            <SelectItem value="gpt-4-turbo-2024-04-09" >GPT 4 Turbo ⚡️</SelectItem>
+                                            <SelectItem value="claude-3-sonnet-20240229" >Claude Sonnet ⚡️</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
+                                <Switch id="depth" onClick={toggledepth}/>
+                                <Label >Depth</Label>
                             </div>
                             <Button
                                 className='ml-2 bg-black '
