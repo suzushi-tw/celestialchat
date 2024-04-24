@@ -19,6 +19,7 @@ Set Up .env:
 ```bash
 ANTHROPIC_API_KEY=
 TAVILY_API_KEY=
+OPENAI_API_KEY=
 
 ```
 
