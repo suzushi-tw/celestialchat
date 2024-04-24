@@ -6,15 +6,12 @@ import { AnthropicStream } from 'ai';
 import axios from 'axios'
 
 
-// Create an OpenAI API client (that's edge friendly!)
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
+
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || '',
+  apiKey: process.env.ANTHROPIC_API_KEY ,
 });
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 interface Message {

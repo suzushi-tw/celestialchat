@@ -23,6 +23,15 @@ OPENAI_API_KEY=
 
 ```
 
+## Docker 
+
+```bash
+docker build -t clestialchat .
+```
+
+```bash
+docker run -p 3000:3000 -d --name celestialchat-container celestialchat
+```
 
 ## Stack
 
