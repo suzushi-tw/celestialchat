@@ -1,9 +1,11 @@
 
 <img src="./public/celestialchat.gif"   alt="Demo">
 
-## CelestialChat
+## CelestialChat proxy verison
 
 CelestialChat is a simple AI chat to deliver fast saerch results powered by Claude Haiku and Tavily search. 
+
+** this is a proxy verison, by using NEXT_PUBLIC_BASE_URL it will rewrite the request 
 
 ## Todo
 
@@ -20,6 +22,7 @@ Set Up .env:
 ANTHROPIC_API_KEY=
 TAVILY_API_KEY=
 OPENAI_API_KEY=
+NEXT_PUBLIC_BASE_URL=
 
 ```
 
