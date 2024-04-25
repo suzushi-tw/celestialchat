@@ -26,7 +26,7 @@ OPENAI_API_KEY=
 ## Docker 
 
 ```bash
-docker build -t clestialchat .
+docker build -t celestialchat .
 ```
 
 ```bash
