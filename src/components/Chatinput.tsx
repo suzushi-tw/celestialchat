@@ -51,6 +51,7 @@ function Chatinput() {
                                     <SelectItem value="claude-3-haiku-20240307">Claude Haiku</SelectItem>
                                     <SelectItem value="gpt-4-1106-preview" disabled>GPT 4 Turbo ⚡️</SelectItem>
                                     <SelectItem value="claude-3-sonnet-20240229" disabled>Claude Sonnet ⚡️</SelectItem>
+                                    <SelectItem value="moonshot-v1-8k" disabled>Moon Shot</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
