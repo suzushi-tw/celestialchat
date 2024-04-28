@@ -55,44 +55,7 @@ const Landing = () => {
 
   };
 
-  // useEffect(() => {
-  //   if (relatedLinks) {
-  //     // Parse the links and update the state
-  //     const linksArray = relatedLinks.split('\n');
-  //     let parsed = [];
-  //     let currentTitle = '';
-  //     let currentLink = '';
-
-  //     linksArray.forEach(item => {
-  //       if (item.startsWith('Link:')) {
-  //         // If there's a current title without a link, update its link
-  //         if (currentTitle && !currentLink) {
-  //           currentLink = item.replace('Link: ', '');
-  //           parsed.push({ title: currentTitle, url: currentLink });
-  //           currentTitle = ''; // Reset currentTitle for the next title
-  //         } else {
-  //           // If there's no current title, this is likely an error in the input
-  //           console.error('Unexpected link without a preceding title:', item);
-  //         }
-  //       } else if (item !== '') {
-  //         // If there's a title without a link, set it as the current title
-  //         if (currentTitle && !currentLink) {
-  //           // This is likely an error in the input, as we have a title without a link
-  //           console.error('Unexpected title without a link:', item);
-  //         } else {
-  //           currentTitle = item;
-  //         }
-  //       }
-  //     });
-
-  //     // If there's a pending title without a link at the end, add it with an empty link
-  //     if (currentTitle && !currentLink) {
-  //       parsed.push({ title: currentTitle, url: '' });
-  //     }
-
-  //     setParsedLinks(parsed);
-  //   }
-  // }, [relatedLinks]); // Dependency array to watch for changes in relatedLinks
+  
 
 
   useEffect(() => {
