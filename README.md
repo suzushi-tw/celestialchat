@@ -3,7 +3,7 @@
 
 ## CelestialChat
 
-CelestialChat is a simple AI chat to deliver fast saerch results powered by Claude Haiku and Tavily search. 
+CelestialChat is a simple AI chat to deliver fast search results powered by Claude Haiku and Tavily search. 
 
 ## Todo
 
@@ -22,6 +22,7 @@ TAVILY_API_KEY=
 OPENAI_API_KEY=
 
 ```
+If you want to use moonshot api please check out the proxy branch by mutse : [moonshot api verison](https://github.com/suzushi-tw/celestialchat/tree/proxy)
 
 ## Docker 
 
