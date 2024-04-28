@@ -10,7 +10,8 @@ import axios from 'axios'
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY ,
 });
-const openai = new OpenAI({
+
+var openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -130,8 +131,14 @@ export async function POST(req: Request) {
           'X-Image-Links': encodeURIComponent(imageLinks), // Custom header for the image links
         },
       });
-    } else if ((aimodel == "gpt-3.5-turbo-16k" || aimodel == "gpt-4-turbo-2024-04-09") && process.env.OPENAI_API_KEY) {
-
+    } else if (((aimodel == "gpt-3.5-turbo-16k" || aimodel == "gpt-4-turbo-2024-04-09") && process.env.OPENAI_API_KEY) ||
+      (aimodel == "moonshot-v1-8k" && process.env.MOONSHOT_API_KEY)) {
+        if (aimodel == "moonshot-v1-8k" && process.env.MOONSHOT_API_KEY) {
+          openai = new OpenAI({
+            baseURL: "https://api.moonshot.cn/v1",
+            apiKey: process.env.MOONSHOT_API_KEY,
+          });
+        }
 
       const initialresponse = await openai.chat.completions.create({
         messages: [
