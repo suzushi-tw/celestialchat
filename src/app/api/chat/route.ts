@@ -132,11 +132,18 @@ export async function POST(req: Request) {
         },
       });
     } else if (((aimodel == "gpt-3.5-turbo-16k" || aimodel == "gpt-4-turbo-2024-04-09") && process.env.OPENAI_API_KEY) ||
-      (aimodel == "moonshot-v1-8k" && process.env.MOONSHOT_API_KEY)) {
+      (aimodel == "moonshot-v1-8k" && process.env.MOONSHOT_API_KEY) ||
+      (aimodel == "deepseek-chat" && process.env.DEEPSEEK_API_KEY)) {
         if (aimodel == "moonshot-v1-8k" && process.env.MOONSHOT_API_KEY) {
           openai = new OpenAI({
             baseURL: "https://api.moonshot.cn/v1",
             apiKey: process.env.MOONSHOT_API_KEY,
+          });
+        }
+        else if (aimodel == "deepseek-chat" && process.env.DEEPSEEK_API_KEY) {
+          openai = new OpenAI({
+            baseURL: "https://api.deepseek.com/v1",
+            apiKey: process.env.DEEKSEEK_API_KEY,
           });
         }
 

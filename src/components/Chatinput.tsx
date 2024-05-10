@@ -52,6 +52,7 @@ function Chatinput() {
                                     <SelectItem value="gpt-4-1106-preview" disabled>GPT 4 Turbo ⚡️</SelectItem>
                                     <SelectItem value="claude-3-sonnet-20240229" disabled>Claude Sonnet ⚡️</SelectItem>
                                     <SelectItem value="moonshot-v1-8k" disabled>Moon Shot</SelectItem>
+                                    <SelectItem value="deepseek-chat" disabled>DeepSeek Chat</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
