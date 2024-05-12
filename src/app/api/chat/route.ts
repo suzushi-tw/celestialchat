@@ -19,6 +19,15 @@ interface Message {
   role: string;
   content: string;
 }
+
+// model apis map that like OpenAI api
+const apis_map = new Map([
+  ["moonshot-v1-8k", {"apiKey": process.env.MOONSHOT_API_KEY, "baseUrl": "https://api.moonshot.cn/v1"}],
+  ["moonshot-v1-32k", {"apiKey": process.env.MOONSHOT_API_KEY, "baseUrl": "https://api.moonshot.cn/v1"}],
+  ["moonshot-v1-128k", {"apiKey": process.env.MOONSHOT_API_KEY, "baseUrl": "https://api.moonshot.cn/v1"}],
+  ["deepseek-chat", {"apiKey": process.env.DEEPSEEK_API_KEY, "baseUrl": "https://api.deepseek.com/v1"}],
+]);
+
 // // IMPORTANT! Set the runtime to edge
 export const runtime = 'edge';
 
@@ -46,6 +55,7 @@ export async function POST(req: Request) {
     const userMessage = reversedMessages.find((message: Message) => message.role === 'user');
     const query = userMessage ? userMessage.content : '';
     console.log(query);
+
     // Ask OpenAI for a streaming chat completion given the prompt
     if ((aimodel == 'claude-3-haiku-20240307' || aimodel == "claude-3-sonnet-20240229") && process.env.ANTHROPIC_API_KEY) {
       const initialresponse = await anthropic.messages.create({
@@ -132,11 +142,11 @@ export async function POST(req: Request) {
         },
       });
     } else if (((aimodel == "gpt-3.5-turbo-16k" || aimodel == "gpt-4-turbo-2024-04-09") && process.env.OPENAI_API_KEY) ||
-      (aimodel == "moonshot-v1-8k" && process.env.MOONSHOT_API_KEY)) {
-        if (aimodel == "moonshot-v1-8k" && process.env.MOONSHOT_API_KEY) {
+      apis_map.get(aimodel)?.apiKey) {
+        if (apis_map.get(aimodel)?.apiKey) {
           openai = new OpenAI({
-            baseURL: "https://api.moonshot.cn/v1",
-            apiKey: process.env.MOONSHOT_API_KEY,
+            baseURL: apis_map.get(aimodel)?.baseUrl,
+            apiKey: apis_map.get(aimodel)?.apiKey,
           });
         }
 

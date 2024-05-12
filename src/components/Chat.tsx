@@ -201,7 +201,9 @@ function Chat({ onRelatedLinks }: ChatProps) {
                                             <SelectItem value="claude-3-haiku-20240307">Claude Haiku</SelectItem>
                                             <SelectItem value="gpt-4-turbo-2024-04-09" >GPT 4 Turbo ⚡️</SelectItem>
                                             <SelectItem value="claude-3-sonnet-20240229" >Claude Sonnet ⚡️</SelectItem>
-                                            <SelectItem value="moonshot-v1-8k">Moon Shot</SelectItem>
+                                            <SelectItem value="moonshot-v1-8k">Moon Shot 8k</SelectItem>
+                                            <SelectItem value="moonshot-v1-32k">Moon Shot 32k</SelectItem>
+                                            <SelectItem value="moonshot-v1-128k">Moon Shot 128k</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
